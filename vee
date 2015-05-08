@@ -1,0 +1,62 @@
+#!/bin/sh
+
+printUsage()
+{
+ printf '%s\n' \
+  'Usage: vee [OPTIONS] [FD]...' \
+  '' \
+  'Copy stdin to each FD (file descriptor)*.' \
+  '' \
+  ' -h, --help              Print this help text and exit.' \
+  ' -i, --ignore-interrupts Ignore interrupt signals (SIGINT)' \
+  '' \
+  '* File descriptors are typically positive integers, but your system/shell' \
+  '  may allow for other arguments. Presently vee uses the "1>&FD" syntax of' \
+  '  the system shell for each FD argument.'
+}
+
+parseOptions=:
+i=0
+while :
+do
+ case $# in 0) break; esac
+ if $parseOptions
+ then
+  case $1 in
+  --)
+   parseOptions=false
+   shift
+   continue
+  ;;
+  -h | --help)
+   printUsage
+   exit 0
+  ;;
+  -i | --ignore-interrupts)
+   trap '' INT
+   continue
+  esac
+ fi
+ if printf '' 1>&"$1"
+ then
+  eval arg$i=\$1
+  i=$((i + 1))
+ fi
+ shift
+done
+
+arglen=$i
+lf='
+'
+while IFS= read -r -n 1 char
+do
+ case $char in '') char=$lf; esac
+ i=0
+ while :
+ do
+  case $i in $arglen) break; esac
+  eval fd=\$arg$i
+  printf %c "$char" 1>&"$fd"
+  i=$((i + 1))
+ done
+done
