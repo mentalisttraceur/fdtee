@@ -1,6 +1,6 @@
 #!/bin/sh
-# Copyright (C) Alexander Kozhevnikov <mentalisttraceur@gmail.com> 2015-05-08;
-# vee 1.0.0
+# Copyright (C) Alexander Kozhevnikov <mentalisttraceur@gmail.com> 2015-05-09;
+# vee 2.0.0
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public Licence as published by
@@ -30,6 +30,18 @@ printUsage()
   '* File descriptors are typically positive integers, but your system/shell' \
   '  may allow for other arguments. Presently vee uses the "1>&FD" syntax of' \
   '  the system shell for each FD argument.'
+}
+
+printLineOnAllFDs()
+{
+ i=0
+ while :
+ do
+  case $i in $arglen) break; esac
+  eval fd=\$arg$i
+  printf %s"$1" "$line" 1>&"$fd"
+  i=$((i + 1))
+ done
 }
 
 parseOptions=:
@@ -63,17 +75,8 @@ do
 done
 
 arglen=$i
-lf='
-'
-while IFS= read -r -n 1 char
+while IFS= read -r line
 do
- case $char in '') char=$lf; esac
- i=0
- while :
- do
-  case $i in $arglen) break; esac
-  eval fd=\$arg$i
-  printf %c "$char" 1>&"$fd"
-  i=$((i + 1))
- done
+ printLineOnAllFDs \\n
 done
+printLineOnAllFDs
