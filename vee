@@ -67,7 +67,6 @@ lf='
 '
 while IFS= read -r -n 1 char
 do
- case $char in '') break; esac
  case $char in '') char=$lf; esac
  i=0
  while :
