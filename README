@@ -24,9 +24,8 @@ Or you can do however many file descriptors you want (in whatever order):
 
     foo | vee 1 4 2 5 3
 
-..just remember the rest of the shell command has to be reading from those file
-descriptors. 1 and 2, being stdout and stderr, are normally being read from by
-default, but the rest typically require other shell redirection to make use of.
+..just remember the rest of the shell command has to use redirection to make
+use of the output on those file descriptors.
 
 
 -= Why is tee not enough? =-
@@ -59,8 +58,8 @@ virtual files to use for redirecting to file descriptors greater than 2.
 
 -= vee, from a design/architecture/philosophy standpoint =-
 
-Depending on how one interprets the Unix philosophy and/or principle of single
-concern, one might say vee is what tee should've been.
+Depending on how one interprets the Unix philosophy, one might say vee is what
+tee should've been.
 
 vee, like tee, does one thing and does it well - repeats/copies its stdin to
 any file descriptor given. It takes this philosophy to an even greater extent
