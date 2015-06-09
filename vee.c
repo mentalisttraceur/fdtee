@@ -26,14 +26,15 @@
 #include <unistd.h>
 #include <signal.h>
 
-char const * const helpText[] =
-{
- "Usage: vee [OPTION] [FD]...\n\n",
- "Copy stdin to each FD (file descriptor)*.\n\n",
- "  -h, --help              Print this help text and exit.\n",
- "  -i, --ignore-interrupts Ignore interrupt signals (SIGINT)\n\n",
- " * File descriptors are expected to be positive integers.\n"
-};
+char const helpText[] =
+ "Usage: vee [OPTION] [FD]...\n"
+ "\n"
+ "Copy stdin to each FD (file descriptor)*.\n"
+ "\n"
+ "  -h, --help              Print this help text and exit.\n"
+ "  -i, --ignore-interrupts Ignore interrupt signals (SIGINT)\n"
+ "\n"
+ " * File descriptors are expected to be positive integers.\n";
 
 int strToUInt(char const * str)
 {
@@ -51,16 +52,6 @@ int strToUInt(char const * str)
  return retval;
 }
 
-void printUsageAndExit(int const exitcode, FILE * const ostream)
-{
- size_t len = sizeof(helpText) / sizeof(char *);
- for(size_t i = 0; i < len; i += 1)
- {
-  fputs(helpText[i], ostream);
- }
- exit(exitcode);
-}
-
 void handleOption(char const * const str)
 {
  if(!strcmp(str, "-i") || !strcmp(str, "--ignore-interrupts"))
@@ -71,12 +62,14 @@ void handleOption(char const * const str)
  else
  if(!strcmp(str, "-h") || !strcmp(str, "--help"))
  {
-  printUsageAndExit(EXIT_SUCCESS, stdout);
+  fputs(helpText, stdout);
+  exit(EXIT_SUCCESS);
  }
  fputs("vee: Unrecognized option: ", stderr);
  fputs(str, stderr);
  fputc('\n', stderr);
- printUsageAndExit(EXIT_FAILURE, stderr);
+ fputs(helpText, stderr);
+ exit(EXIT_FAILURE);
 }
 
 int main(int argc, char * * argv)
