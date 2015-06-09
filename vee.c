@@ -75,8 +75,6 @@ void handleOption(char const * const str)
 
 int main(int argc, char * * argv)
 {
- char c;
- 
  /* If there are arguments, the first argument is the program name: skip it. */
  if(argc)
  {
@@ -101,6 +99,7 @@ int main(int argc, char * * argv)
  
  signal(SIGPIPE, SIG_IGN);
  
+ char c;
  ssize_t readcount;
  while(readcount = read(0, &c, 1))
  {
