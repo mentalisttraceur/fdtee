@@ -34,7 +34,8 @@ char const helpText[] =
  "  -h, --help              Print this help text and exit.\n"
  "  -i, --ignore-interrupts Ignore interrupt signals (SIGINT)\n"
  "\n"
- " * File descriptors are expected to be positive integers.\n";
+ " * File descriptors are expected to be positive integers.\n"
+ "\n";
 
 int strToUInt(char const * str)
 {
