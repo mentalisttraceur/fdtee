@@ -101,7 +101,7 @@ int main(int argc, char * * argv)
  
  char c;
  ssize_t readcount;
- while(readcount = read(0, &c, 1))
+ while((readcount = read(0, &c, 1)) > 0)
  {
   for(size_t i = 0; i < fdcount; i += 1)
   {
