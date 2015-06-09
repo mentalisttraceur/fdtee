@@ -99,9 +99,9 @@ int main(int argc, char * * argv)
  
  signal(SIGPIPE, SIG_IGN);
  
- char c;
+ char c[BUFSIZ];
  ssize_t readcount;
- while((readcount = read(0, &c, 1)) > 0)
+ while((readcount = read(0, &c, BUFSIZ)) > 0)
  {
   for(size_t i = 0; i < fdcount; i += 1)
   {
