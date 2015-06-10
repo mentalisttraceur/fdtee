@@ -1,6 +1,6 @@
 /*
- * vee 3.0.0
- * Copyright (C) Alexander Kozhevnikov <mentalisttraceur@gmail.com> 2015-06-07;
+ * vee 3.1.0
+ * Copyright (C) Alexander Kozhevnikov <mentalisttraceur@gmail.com> 2015-06-10;
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public Licence as published by
