@@ -38,6 +38,8 @@ char const helpText[] =
  " * File descriptors are expected to be positive integers.\n"
  "\n";
 
+char const unrecognizedOption[] = "vee: Unrecognized option: ";
+
 int strToUInt(char const * str)
 {
  int c, retval = 0;
@@ -64,12 +66,12 @@ void handleOption(char const * const str)
  else
  if(!strcmp(str, "-h") || !strcmp(str, "--help"))
  {
-  fputs(helpText + 1, stdout);
+  write(1, helpText + 1, sizeof(helpText) - 2);
   exit(EXIT_SUCCESS);
  }
- fputs("vee: Unrecognized option: ", stderr);
- fputs(str, stderr);
- fputs(helpText, stderr);
+ write(2, unrecognizedOption, sizeof(unrecognizedOption) - 1);
+ write(2, str, strlen(str));
+ write(2, helpText, sizeof(helpText) - 1);
  exit(EXIT_FAILURE);
 }
 
