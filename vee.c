@@ -27,6 +27,7 @@
 #include <signal.h>
 
 char const helpText[] =
+ "\n"
  "Usage: vee [OPTION] [FD]...\n"
  "\n"
  "Copy stdin to each FD (file descriptor)*.\n"
@@ -63,12 +64,11 @@ void handleOption(char const * const str)
  else
  if(!strcmp(str, "-h") || !strcmp(str, "--help"))
  {
-  fputs(helpText, stdout);
+  fputs(helpText + 1, stdout);
   exit(EXIT_SUCCESS);
  }
  fputs("vee: Unrecognized option: ", stderr);
  fputs(str, stderr);
- fputc('\n', stderr);
  fputs(helpText, stderr);
  exit(EXIT_FAILURE);
 }
