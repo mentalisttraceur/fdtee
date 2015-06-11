@@ -87,7 +87,7 @@ int main(int argc, char * * argv)
  size_t fdcount = 0;
  for(size_t i = 0; i < argc; i += 1)
  {
-  char * const arg = argv[i];
+  char const * const arg = argv[i];
   fds[fdcount] = strToUInt(arg);
   if(fds[fdcount] >= 0)
   {
