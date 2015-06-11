@@ -38,7 +38,7 @@ char const helpText[] =
 
 char const unrecognizedOption[] = "vee: Unrecognized option: ";
 
-int strToUInt(char const * str)
+inline int strToUInt(char const * str)
 {
  int retval = 0;
  for(int c = *str; c; str += 1, c = *str)
@@ -54,7 +54,7 @@ int strToUInt(char const * str)
  return retval;
 }
 
-void handleOption(char const * const str)
+inline void handleOption(char const * const str)
 {
  if(!strcmp(str, "-i") || !strcmp(str, "--ignore-interrupts"))
  {
