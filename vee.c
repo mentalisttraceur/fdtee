@@ -40,7 +40,7 @@ char const unrecognizedOption[] = "vee: Unrecognized option: ";
 
 int strToUInt(char const * str)
 {
- int c, retval = 0;
+ int retval = 0;
  for(int c = *str; c; str += 1, c = *str)
  {
   if(c < '0' || c > '9')
