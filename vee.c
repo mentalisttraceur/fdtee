@@ -99,14 +99,14 @@ int main(int argc, char * * argv)
  
  signal(SIGPIPE, SIG_IGN);
  
- char c[BUFSIZ];
+ char buffer[BUFSIZ];
  ssize_t readcount;
  int exitcode = EXIT_SUCCESS;
- while((readcount = read(0, &c, BUFSIZ)) > 0)
+ while((readcount = read(0, &buffer, BUFSIZ)) > 0)
  {
   for(size_t i = 0; i < fdcount; i += 1)
   {
-   if(write(fds[i], &c, readcount) != readcount)
+   if(write(fds[i], &buffer, readcount) != readcount)
    {
     exitcode = EXIT_FAILURE;
    }
