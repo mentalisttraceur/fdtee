@@ -75,17 +75,11 @@ inline void handleOption(char const * const str)
 
 int main(int argc, char * * argv)
 {
- /* If there are arguments, the first argument is the program name: skip it. */
- if(argc)
- {
-  argc -= 1;
-  argv += 1;
- }
- 
  /* Make array to hold the file descriptors to write to. */
  int * const fds = malloc(argc * sizeof(int));
  size_t fdcount = 0;
- for(size_t i = 0; i < argc; i += 1)
+ /* If there are arguments, the first argument is the program name: skip it. */
+ for(size_t i = 1; i < argc; i += 1)
  {
   char const * const arg = argv[i];
   fds[fdcount] = strToUInt(arg);
