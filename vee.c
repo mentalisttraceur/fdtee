@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 
 #include <unistd.h>
 #include <signal.h>
@@ -102,17 +101,16 @@ int main(int argc, char * * argv)
  
  char c[BUFSIZ];
  ssize_t readcount;
- bool error = false;
+ int exitcode = EXIT_SUCCESS;
  while((readcount = read(0, &c, BUFSIZ)) > 0)
  {
   for(size_t i = 0; i < fdcount; i += 1)
   {
-   error = (write(fds[i], &c, readcount) != readcount);
+   if(write(fds[i], &c, readcount) != readcount)
+   {
+    exitcode = EXIT_FAILURE;
+   }
   }
  }
- if(error)
- {
-  return EXIT_FAILURE;
- }
- return EXIT_SUCCESS;
+ return exitcode;
 }
