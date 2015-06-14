@@ -32,7 +32,7 @@ char const helpText[] =
  "Copy stdin to each FD (file descriptor)*.\n"
  "\n"
  "  -h, --help              Print this help text and exit.\n"
- "  -i, --ignore-interrupts Ignore interrupt signals (SIGINT)\n"
+ "  -i, --ignore-interrupts Ignore interrupt signals (SIGINT).\n"
  "\n"
  " * File descriptors are expected to be positive integers.\n";
 
