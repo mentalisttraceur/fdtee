@@ -91,7 +91,9 @@ int main(int argc, char * * argv)
   handleOption(arg);
  }
  
- signal(SIGPIPE, SIG_IGN);
+ #ifdef SIGPIPE
+  signal(SIGPIPE, SIG_IGN);
+ #endif
  
  char buffer[BUFSIZ];
  ssize_t readcount;
