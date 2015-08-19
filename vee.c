@@ -1,6 +1,6 @@
 /*
  * vee 3.4.0
- * Copyright (C) Alexander Kozhevnikov <mentalisttraceur@gmail.com> 2015-06-20;
+ * Copyright (C) Alexander Kozhevnikov <mentalisttraceur@gmail.com> 2015-08-19;
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public Licence as published by
@@ -54,23 +54,22 @@ static inline int strToUInt(char const * str)
  return retval;
 }
 
-static inline void handleOption(char const * const str)
-{
- if(!strcmp(str, "-i") || !strcmp(str, "--ignore-interrupts"))
- {
-  signal(SIGINT, SIG_IGN);
-  return;
- }
- else
- if(!strcmp(str, "-h") || !strcmp(str, "--help"))
- {
-  write(1, helpText + 1, sizeof(helpText) - 2);
-  exit(EXIT_SUCCESS);
- }
- write(2, unrecognizedOption, sizeof(unrecognizedOption) - 1);
- write(2, str, strlen(str));
- write(2, helpText, sizeof(helpText) - 1);
- exit(EXIT_FAILURE);
+#define handleOption_m(str) \
+if(!strcmp(str, "-i") || !strcmp(str, "--ignore-interrupts")) \
+{ \
+ signal(SIGINT, SIG_IGN); \
+} \
+else \
+if(!strcmp(str, "-h") || !strcmp(str, "--help")) \
+{ \
+ write(1, helpText + 1, sizeof(helpText) - 2); \
+} \
+else \
+{ \
+ write(2, unrecognizedOption, sizeof(unrecognizedOption) - 1); \
+ write(2, str, strlen(str)); \
+ write(2, helpText, sizeof(helpText) - 1); \
+ return EXIT_FAILURE; \
 }
 
 int main(int argc, char * * argv)
@@ -88,7 +87,7 @@ int main(int argc, char * * argv)
    fdcount += 1;
    continue;
   }
-  handleOption(arg);
+  handleOption_m(arg)
  }
  
  #ifdef SIGPIPE
