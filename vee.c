@@ -38,20 +38,18 @@ char const helpText[] =
 
 char const unrecognizedOption[] = "vee: Unrecognized option: ";
 
-static inline int strToUInt(char const * str)
-{
- int retval = 0;
- for(int c = *str; c; str += 1, c = *str)
- {
-  if(c < '0' || c > '9')
-  {
-   return -1;
-  }
-  c -= '0';
-  retval *= 10;
-  retval += c;
- }
- return retval;
+#define strToUInt_m(str, val) \
+val = 0; \
+for(int c = *str; c; str += 1, c = *str) \
+{ \
+ if(c < '0' || c > '9') \
+ { \
+  val = -1; \
+  break; \
+ } \
+ c -= '0'; \
+ val *= 10; \
+ val += c; \
 }
 
 #define handleOption_m(str) \
@@ -76,15 +74,17 @@ else \
 int main(int argc, char * * argv)
 {
  /* Make array to hold the file descriptors to write to. */
- int * const fds = malloc(argc * sizeof(int));
+ int * const restrict fds = malloc(argc * sizeof(int));
  size_t fdcount = 0;
  /* If there are arguments, the first argument is the program name: skip it. */
  for(size_t i = 1; i < argc; i += 1)
  {
-  char const * const arg = argv[i];
-  fds[fdcount] = strToUInt(arg);
-  if(fds[fdcount] >= 0)
+  char const * arg = argv[i];
+  int fd = fds[fdcount];
+  strToUInt_m(arg, fd)
+  if(fd >= 0)
   {
+   fds[fdcount] = fd;
    fdcount += 1;
    continue;
   }
