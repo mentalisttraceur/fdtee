@@ -1,5 +1,5 @@
 /*
- * vee 3.4.0
+ * vee 3.4.1
  * Copyright (C) Alexander Kozhevnikov <mentalisttraceur@gmail.com> 2015-08-19;
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -69,6 +69,7 @@ else \
  write(2, unrecognizedOption, sizeof(unrecognizedOption) - 1); \
  write(2, str, strlen(str)); \
  write(2, helpText, sizeof(helpText) - 1); \
+ free(fds); \
  return EXIT_FAILURE; \
 }
 
@@ -107,5 +108,6 @@ int main(int argc, char * * argv)
    }
   }
  }
+ free(fds);
  return exitcode;
 }
