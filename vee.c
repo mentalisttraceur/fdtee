@@ -80,7 +80,7 @@ int main(int argc, char * * argv)
  /* If there are arguments, the first argument is the program name: skip it. */
  for(size_t i = 1; i < argc; i += 1)
  {
-  char const * arg = argv[i];
+  char const * restrict arg = argv[i];
   int fd = fds[fdcount];
   strToUInt_m(arg, fd)
   if(fd >= 0)
