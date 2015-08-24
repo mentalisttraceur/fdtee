@@ -99,17 +99,17 @@ int main(int argc, char * * argv)
  
  char buffer[BUFSIZ];
  ssize_t readcount;
- int exitcode = EXIT_SUCCESS;
+ int exitstatus = EXIT_SUCCESS;
  while((readcount = read(0, &buffer, BUFSIZ)) > 0)
  {
   for(size_t i = 0; i < fdcount; i += 1)
   {
    if(write(fds[i], &buffer, readcount) != readcount)
    {
-    exitcode = EXIT_FAILURE;
+    exitstatus = EXIT_FAILURE;
    }
   }
  }
  free(fds);
- return exitcode;
+ return exitstatus;
 }
