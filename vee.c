@@ -89,6 +89,7 @@ int main(int argc, char * * argv)
    fdcount += 1;
    continue;
   }
+  arg = argv[i];
   handleOption_m(arg)
  }
  
