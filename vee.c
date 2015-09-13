@@ -82,7 +82,7 @@ int main(int argc, char * * argv)
  for(size_t i = 1; i < argc; i += 1)
  {
   char const * restrict arg = argv[i];
-  int fd = fds[fdcount];
+  int fd;
   strToUInt_m(arg, fd)
   if(fd >= 0)
   {
