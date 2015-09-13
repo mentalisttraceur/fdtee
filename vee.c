@@ -61,20 +61,20 @@ else \
 if(!strcmp(str, "-h") || !strcmp(str, "--help")) \
 { \
  write(1, helpText + 1, sizeof(helpText) - 2); \
- free(fds); \
- return EXIT_SUCCESS; \
+ goto cleanup; \
 } \
 else \
 { \
  write(2, unrecognizedOption, sizeof(unrecognizedOption) - 1); \
  write(2, str, strlen(str)); \
  write(2, helpText, sizeof(helpText) - 1); \
- free(fds); \
- return EXIT_FAILURE; \
+ exitstatus = EXIT_FAILURE; \
+ goto cleanup; \
 }
 
 int main(int argc, char * * argv)
 {
+ int exitstatus = EXIT_SUCCESS;
  /* Make array to hold the file descriptors to write to. */
  int * const restrict fds = malloc(argc * sizeof(int));
  size_t fdcount = 0;
@@ -100,7 +100,6 @@ int main(int argc, char * * argv)
  
  char buffer[BUFSIZ];
  ssize_t readcount;
- int exitstatus = EXIT_SUCCESS;
  while((readcount = read(0, &buffer, BUFSIZ)) > 0)
  {
   for(size_t i = 0; i < fdcount; i += 1)
@@ -111,6 +110,7 @@ int main(int argc, char * * argv)
    }
   }
  }
+cleanup:
  free(fds);
  return exitstatus;
 }
