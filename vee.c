@@ -61,6 +61,7 @@ else \
 if(!strcmp(str, "-h") || !strcmp(str, "--help")) \
 { \
  write(1, helpText + 1, sizeof(helpText) - 2); \
+ free(fds); \
  return EXIT_SUCCESS; \
 } \
 else \
