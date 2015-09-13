@@ -37,6 +37,7 @@ char const helpText[] =
  " * File descriptors are expected to be positive integers.\n";
 
 char const unrecognizedOption[] = "vee: Unrecognized option: ";
+char const mallocFailed[] = "vee: Unable to allocate memory for FD list.\n";
 
 #define strToUInt_m(str, val) \
 val = 0; \
@@ -77,6 +78,11 @@ int main(int argc, char * * argv)
  int exitstatus = EXIT_SUCCESS;
  /* Make array to hold the file descriptors to write to. */
  int * const restrict fds = malloc(argc * sizeof(int));
+ if(!fds)
+ {
+  write(2, mallocFailed, sizeof(mallocFailed) - 1);
+  return EXIT_FAILURE;
+ }
  size_t fdcount = 0;
  /* If there are arguments, the first argument is the program name: skip it. */
  for(size_t i = 1; i < argc; i += 1)
