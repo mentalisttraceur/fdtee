@@ -1,5 +1,5 @@
 /*
- * vee 3.4.5
+ * vee 3.5.0
  * Copyright (C) Alexander Kozhevnikov <mentalisttraceur@gmail.com> 2015-09-17;
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,12 +18,25 @@
  * 59 Temple Place, Suite 330 Boston MA 02111-1307 USA.
  */
 
+#include <limits.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <unistd.h>
 #include <signal.h>
+
+#define UCHAR_HALF_MAX (UCHAR_MAX >> 1)
+/*\
+The maximum value of the bottom "half" of the value range of an unsigned char.
+Also the value that sets all but the most significant bit of an unsigned char.
+\*/
+
+#define UCHAR_TOP_BIT (UCHAR_HALF_MAX + 1)
+/*\
+The most significant bit of an unsigned char.
+\*/
 
 char const helpText[] =
  "\n"
@@ -37,7 +50,43 @@ char const helpText[] =
  " * File descriptors are expected to be positive integers.\n";
 
 char const unrecognizedOption[] = "vee: Unrecognized option: ";
-char const mallocFailed[] = "vee: Unable to allocate memory for FD list.\n";
+
+#define bytepack_m(ptr, val) \
+if(!val) \
+{ \
+ ptr[0] = UCHAR_TOP_BIT; \
+ ptr[1] = 0; \
+} \
+else \
+{ \
+ do \
+ { \
+  unsigned char bytepack_m_tempUChar = val; \
+  val >>= CHAR_BIT - 1; \
+  if(val) \
+  { \
+   bytepack_m_tempUChar |= UCHAR_TOP_BIT; \
+  } \
+  *ptr = bytepack_m_tempUChar; \
+  ptr += 1; \
+ } \
+ while(val); \
+}
+
+#define byteback_m(ptr, val) \
+for \
+( \
+ unsigned char byteback_m_shift = 0, \
+  byteback_m_continueBit = UCHAR_TOP_BIT; \
+ byteback_m_continueBit; \
+ byteback_m_shift += CHAR_BIT - 1, ptr += 1 \
+) \
+{ \
+ unsigned char byteback_m_tempUChar = *ptr; \
+ byteback_m_continueBit &= byteback_m_tempUChar; \
+ byteback_m_tempUChar &= UCHAR_HALF_MAX; \
+ val += byteback_m_tempUChar << byteback_m_shift; \
+}
 
 #define strToUInt_m(str, val) \
 val = 0; \
@@ -62,42 +111,32 @@ else \
 if(!strcmp(str, "-h") || !strcmp(str, "--help")) \
 { \
  write(1, helpText + 1, sizeof(helpText) - 2); \
- goto cleanup; \
+ return EXIT_SUCCESS; \
 } \
 else \
 { \
  write(2, unrecognizedOption, sizeof(unrecognizedOption) - 1); \
  write(2, str, strlen(str)); \
  write(2, helpText, sizeof(helpText) - 1); \
- exitstatus = EXIT_FAILURE; \
- goto cleanup; \
+ return EXIT_FAILURE; \
 }
 
 int main(int argc, char * * argv)
 {
- int exitstatus = EXIT_SUCCESS;
- /* Make array to hold the file descriptors to write to. */
- int * const restrict fds = malloc(argc * sizeof(int));
- if(!fds)
- {
-  write(2, mallocFailed, sizeof(mallocFailed) - 1);
-  return EXIT_FAILURE;
- }
- size_t fdcount = 0;
+ int fd;
  /* If there are arguments, the first argument is the program name: skip it. */
  for(size_t i = 1; i < argc; i += 1)
  {
-  char const * restrict argPtr1 = argv[i];
-  char const * restrict argPtr2 = argPtr1;
-  int fd;
+  char * restrict argPtr1 = argv[i];
+  char * restrict argPtr2 = argPtr1;
   strToUInt_m(argPtr1, fd)
   if(fd >= 0 && argPtr1 > argPtr2)
   {
-   fds[fdcount] = fd;
-   fdcount += 1;
+   bytepack_m(argPtr2, fd);
    continue;
   }
   handleOption_m(argPtr2)
+  *argPtr2 = 0;
  }
  
  #ifdef SIGPIPE
@@ -106,17 +145,23 @@ int main(int argc, char * * argv)
  
  char buffer[BUFSIZ];
  ssize_t readcount;
+ int exitstatus = EXIT_SUCCESS;
  while((readcount = read(0, &buffer, BUFSIZ)) > 0)
  {
-  for(size_t i = 0; i < fdcount; i += 1)
+  for(size_t i = 1; i < argc; i += 1)
   {
-   if(write(fds[i], &buffer, readcount) != readcount)
+   unsigned char const * restrict arg = argv[i];
+   if(!*arg)
+   {
+    continue;
+   }
+   fd = 0;
+   byteback_m(arg, fd)
+   if(write(fd, &buffer, readcount) != readcount)
    {
     exitstatus = EXIT_FAILURE;
    }
   }
  }
-cleanup:
- free(fds);
  return exitstatus;
 }
