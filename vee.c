@@ -87,17 +87,17 @@ int main(int argc, char * * argv)
  /* If there are arguments, the first argument is the program name: skip it. */
  for(size_t i = 1; i < argc; i += 1)
  {
-  char const * restrict arg = argv[i];
+  char const * restrict argPtr1 = argv[i];
+  char const * restrict argPtr2 = argPtr1;
   int fd;
-  strToUInt_m(arg, fd)
-  if(fd >= 0)
+  strToUInt_m(argPtr1, fd)
+  if(fd >= 0 && argPtr1 > argPtr2)
   {
    fds[fdcount] = fd;
    fdcount += 1;
    continue;
   }
-  arg = argv[i];
-  handleOption_m(arg)
+  handleOption_m(argPtr2)
  }
  
  #ifdef SIGPIPE
