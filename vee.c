@@ -50,6 +50,7 @@ char const helpText[] =
  " * File descriptors are expected to be positive integers.\n";
 
 char const unrecognizedOption[] = "vee: Unrecognized option: ";
+char const fdOverflowedInt[] = "vee: FD value greater than maximum possible: ";
 
 #define bytepack_m(ptr, val) \
 if(!val) \
@@ -88,7 +89,7 @@ for \
  val += byteback_m_tempUChar << byteback_m_shift; \
 }
 
-#define strToUInt_m(str, val) \
+#define strToFD_m(str, val) \
 val = 0; \
 for(int c = *str; c; str += 1, c = *str) \
 { \
@@ -97,9 +98,19 @@ for(int c = *str; c; str += 1, c = *str) \
   val = -1; \
   break; \
  } \
- c -= '0'; \
- val *= 10; \
- val += c; \
+ if(val <= INT_MAX / 10) \
+ { \
+  val *= 10; \
+  c -= '0'; \
+  if(val <= INT_MAX - c) \
+  { \
+   val += c; \
+   continue; \
+  } \
+ } \
+ write(2, fdOverflowedInt, sizeof(fdOverflowedInt) - 1); \
+ write(2, argPtr2, strlen(argPtr2)); \
+ return EXIT_FAILURE; \
 }
 
 #define handleOption_m(str) \
@@ -129,7 +140,7 @@ int main(int argc, char * * argv)
  {
   char * restrict argPtr1 = argv[i];
   char * restrict argPtr2 = argPtr1;
-  strToUInt_m(argPtr1, fd)
+  strToFD_m(argPtr1, fd)
   if(fd >= 0 && argPtr1 > argPtr2)
   {
    bytepack_m(argPtr2, fd);
