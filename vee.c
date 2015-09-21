@@ -18,10 +18,11 @@
  * 59 Temple Place, Suite 330 Boston MA 02111-1307 USA.
  */
 
+#define _POSIX_C_SOURCE 1
+
 #include <limits.h>
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <unistd.h>
@@ -154,14 +155,14 @@ int main(int argc, char * * argv)
   signal(SIGPIPE, SIG_IGN);
  #endif
  
- char buffer[BUFSIZ];
+ char buffer[PIPE_BUF];
  ssize_t readcount;
  int exitstatus = EXIT_SUCCESS;
- while((readcount = read(0, &buffer, BUFSIZ)) > 0)
+ while((readcount = read(0, &buffer, PIPE_BUF)) > 0)
  {
   for(size_t i = 1; i < argc; i += 1)
   {
-   unsigned char const * restrict arg = argv[i];
+   unsigned char * restrict arg = argv[i];
    if(!*arg)
    {
     continue;
