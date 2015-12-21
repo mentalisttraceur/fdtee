@@ -20,13 +20,13 @@
 
 #define _POSIX_C_SOURCE 1
 
-#include <limits.h>
+#include <limits.h> /* UCHAR_MAX, INT_MAX, CHAR_BIT */
 
-#include <stdlib.h>
-#include <string.h>
+#include <stdlib.h> /* EXIT_SUCCESS, EXIT_FAILURE, size_t */
+#include <string.h> /* strlen, strcmp */
 
-#include <unistd.h>
-#include <signal.h>
+#include <unistd.h> /* read, write, PIPE_BUF, ssize_t */
+#include <signal.h> /* signal, SIG_IGN, SIGPIPE, SIGINT */
 
 #define UCHAR_HALF_MAX (UCHAR_MAX >> 1)
 /*\
