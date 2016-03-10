@@ -48,7 +48,8 @@ char const helpText[] =
  "  -h, --help              Print this help text and exit.\n"
  "  -i, --ignore-interrupts Ignore interrupt signals (SIGINT).\n"
  "\n"
- " * File descriptors are expected to be positive integers.\n";
+ " * File descriptors are expected to be positive integers.\n"
+;
 
 char const unrecognizedOption[] = "vee: Unrecognized option: ";
 char const fdOverflowedInt[] = "vee: FD value greater than maximum possible: ";
