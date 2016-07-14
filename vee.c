@@ -1,5 +1,5 @@
 /*
- * vee 3.6.0
+ * fdtee 0.0.0
  * Copyright (C) 2015-12-21 Alexander Kozhevnikov <mentalisttraceur@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ The most significant bit of an unsigned char.
 
 char const helpText[] =
  "\n"
- "Usage: vee [OPTION] [FD]...\n"
+ "Usage: fdtee [OPTION] [FD]...\n"
  "\n"
  "Copy stdin to each FD (file descriptor)*.\n"
  "\n"
@@ -51,8 +51,8 @@ char const helpText[] =
  " * File descriptors are expected to be positive integers.\n"
 ;
 
-char const unrecognizedOption[] = "vee: Unrecognized option: ";
-char const fdOverflowedInt[] = "vee: FD value greater than maximum possible: ";
+char const unrecognizedOption[] = "fdtee: Unrecognized option: ";
+char const fdOverflowedInt[] = "fdtee: FD value greater than maximum possible: ";
 
 #define bytepack_m(ptr, val) \
 if(!val) \
