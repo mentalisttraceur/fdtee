@@ -15,13 +15,14 @@
 
 #define _POSIX_C_SOURCE 1
 
-#include <limits.h> /* PIPE_BUF, UCHAR_MAX, INT_MAX, CHAR_BIT */
+/* Standard C library headers */
+#include <limits.h> /* CHAR_BIT, INT_MAX, UCHAR_MAX, PIPE_BUF */
+#include <signal.h> /* SIGINT, SIGPIPE, SIG_IGN, signal */
+#include <stdlib.h> /* EXIT_FAILURE, EXIT_SUCCESS, size_t */
+#include <string.h> /* strcmp, strlen */
 
-#include <stdlib.h> /* EXIT_SUCCESS, EXIT_FAILURE, size_t */
-#include <string.h> /* strlen, strcmp */
-
-#include <unistd.h> /* read, write, ssize_t */
-#include <signal.h> /* signal, SIG_IGN, SIGPIPE, SIGINT */
+/* Standard UNIX/Linux (POSIX/SUS base) headers */
+#include <unistd.h> /* read, ssize_t, write */
 
 #define UCHAR_HALF_MAX (UCHAR_MAX >> 1)
 /*\
