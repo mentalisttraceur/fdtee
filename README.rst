@@ -2,7 +2,7 @@ fdtee
 -----
 
 ``fdtee`` is like the well known program ``tee``, but with
-a key difference: ``fdtee` copies its ``stdin`` to any
+a key difference: ``fdtee`` copies its ``stdin`` to any
 *file descriptor* given, instead of to file names.
 
 
