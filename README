@@ -81,7 +81,7 @@ you can do with tee, because this:
 
 ..and this:
 
-    foo | fdtee -a bar.txt
+    foo | tee -a bar.txt
 
 ..is equivalent to:
 
