@@ -16,7 +16,7 @@ If you've ever found yourself asking:
 or
 
     "How do I pipe output to multiple processes (without using the
-     non-standard/less-portable feature of process substitution)?"
+    non-standard/less-portable feature of process substitution)?"
 
 then this tool is for you.
 
