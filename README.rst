@@ -20,7 +20,6 @@ or
 
 then this tool is for you.
 
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
 With ``fdtee``, to redirect the output of ``foo`` to both
 ``stdout`` and ``stderr`` (on most systems, file
 descriptors 1 and 2 respectively), you would simply do:
