@@ -13,7 +13,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 \*****************************************************************************/
 
-#define _POSIX_C_SOURCE 1
+#define _POSIX_C_SOURCE 1 /* PIPE_BUF */
 
 /* Standard C library headers */
 #include <limits.h> /* CHAR_BIT, INT_MAX, UCHAR_MAX, PIPE_BUF */
