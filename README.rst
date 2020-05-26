@@ -7,7 +7,7 @@ a key difference: ``fdtee` copies its ``stdin`` to any
 
 
 Why?
-===
+====
 
 If you've ever found yourself asking:
 
