@@ -62,12 +62,8 @@ But this is broken in several cases:
 
 In all of those cases, ``tee /dev/stderr`` does not work.
 
-More importantly, if you wanted to split your output over more than two streams
-or to streams other than stdout and stderr, tee does not work as well. At best,
-the syntax is messy because you'll need additional redirects and maybe more
-than one instance of tee to pipe through, at worst, you simply can't, thanks
-to the limitations above. There's also no standardized, consistently available
-virtual files to use for redirecting to file descriptors greater than 2.
+Also, there's also no standardized, consistently available virtual
+files to use for redirecting to file descriptors greater than 2.
 
 
 ``fdtee``, from a design/architecture/philosophy standpoint
