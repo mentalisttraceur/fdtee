@@ -66,14 +66,11 @@ Also, there's also no standardized, consistently available virtual
 files to use for redirecting to file descriptors greater than 2.
 
 
-``fdtee``, from a design/architecture/philosophy standpoint
-===========================================================
-
-Depending on how one interprets the Unix philosophy, one
-might say ``fdtee`` is what ``tee`` should've been.
+``fdtee``, from a philosophy standpoint
+=======================================
 
 ``fdtee``, like ``tee``, does one thing and does it well
-- repeats/copies its stdin to any file descriptor given.
+- repeats/copies ``stdin`` to any file descriptor given.
 It takes this philosophy to an even greater extent than
 ``tee`` does: it does not have special-case logic for 
 ``stdout``, neither by writing to ``stdout`` by default,
