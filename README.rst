@@ -41,8 +41,14 @@ to make use of the output on those file descriptors.
 Why is ``tee`` not enough?
 ==========================
 
-The common alternative for splitting output over both ``stdout``
-and ``stderr`` is to use ``tee`` with virtual files:
+``fdtee`` is more versatile than ``tee``. Consider some examples:
+
+Split to stdout and stderr
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The common alternative for splitting output over multiple file
+descriptors is to use ``tee`` with virtual files. For example,
+to split to both ``stdout`` and ``stderr``:
 
 .. code:: shell
 
@@ -62,6 +68,10 @@ But this is broken in several cases:
 
 In all of those cases, ``tee /dev/stderr`` does not work.
 
+Of course, in most cases, we should not use ``stderr`` like this
+anyway! ``stderr`` is for errors, logging, diagnostics, and other
+information which is not part of our program's output or workings.
+
 Also, there's also no standardized, consistently available virtual
 files to use for redirecting to file descriptors greater than 2.
 
@@ -72,10 +82,16 @@ files to use for redirecting to file descriptors greater than 2.
 ``fdtee``, like ``tee``, does one thing and does it well
 - repeats/copies ``stdin`` to any file descriptor given.
 It takes this philosophy to an even greater extent than
-``tee`` does: it does not have special-case logic for 
-``stdout``, neither by writing to ``stdout`` by default,
-nor by needing a magic argument value (``-``) which is
-parsed differently than the rest of its arguments.
+``tee`` does:
+
+1. It doesn't even concern itself with opening files - the
+   shell already has solid facilities for that, which also
+   helps separate out concerns like "do we open this file
+   for truncating or appending write?"
+2. It does not have special-case logic for ``stdout``,
+   neither by writing to ``stdout`` by default, nor by
+   needing a magic argument value (``-``) which is parsed
+   differently than the rest of its arguments.
 
 Furthermore, when you combine ``fdtee`` with the file redirection
 capabilities which existed in the Bourne shell since its early
@@ -103,10 +119,18 @@ is equivalent to:
 
     foo | fdtee 1 3 3>>bar.txt
 
+Meanwhile, what's the ``tee`` equivalent to this?
+
+.. code:: shell
+
+    foo | fdtee 1 3 3>>bar.txt
+
+(Hint: you'd need two instances of ``tee``.)
+
 So you could implement ``tee`` as a wrapper around ``fdtee``, 
 but you cannot implement ``fdtee`` as a wrapper around
-``tee`` in any portable manner. Thus, ``fdtee`` is
-fundamentally a more flexible building block for doing
+``tee`` in any portable, clean, and robust way. So ``fdtee``
+is fundamentally a more flexible building block for doing
 powerful things with a Bourne/POSIX shell than ``tee`` is.
 
 
